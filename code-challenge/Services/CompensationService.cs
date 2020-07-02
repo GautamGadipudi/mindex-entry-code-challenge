@@ -11,6 +11,7 @@ namespace challenge.Services
     {
         private readonly ICompensationRepository _compensationRepository;
         private readonly ILogger<CompensationService> _logger;
+
         public CompensationService(ILogger<CompensationService> logger, ICompensationRepository compensationRepository)
         {
             _compensationRepository = compensationRepository;

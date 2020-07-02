@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace challenge.Models
 {
     public class Compensation

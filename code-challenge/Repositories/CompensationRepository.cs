@@ -35,11 +35,10 @@ namespace challenge.Repositories
 
         public Compensation GetById(String id)
         {
-            var compensation = _employeeContext
+            return _employeeContext
                 .Compensations
                 .Include(i => i.Employee)
                 .SingleOrDefault(i => i.Employee.EmployeeId == id);
-            return compensation;
         }
 
         public Task SaveAsync()

@@ -41,5 +41,36 @@ namespace challenge.Repositories
         {
             return _employeeContext.Remove(employee).Entity;
         }
+
+        public ReportingStructure GetReportingStructureById(String id)
+        {
+            ReportingStructure reportingStructure = new ReportingStructure
+            {
+                Employee = _employeeContext
+                    .Employees
+                    .Include(i => i.DirectReports)
+                    .FirstOrDefault(i => i.EmployeeId == id),
+
+                NumberOfReports = GetNumberOfReportsById(id)
+            };
+
+            return reportingStructure;
+        }
+
+        private int GetNumberOfReportsById(String id)
+        {
+            int result = 0;
+            Queue<Employee> myQueue = new Queue<Employee>(_employeeContext.Employees.Include(i => i.DirectReports).FirstOrDefault(i => i.EmployeeId == id).DirectReports);
+            while (myQueue.Count > 0)
+            {
+                Employee employee = myQueue.Dequeue();
+                result += 1;
+                IEnumerable<Employee> directReports = _employeeContext.Employees.Include(i => i.DirectReports).FirstOrDefault(i => i.EmployeeId == employee.EmployeeId).DirectReports;
+                foreach (var directReport in directReports)
+                    myQueue.Enqueue(directReport);
+            }
+
+            return result;
+        }
     }
 }
